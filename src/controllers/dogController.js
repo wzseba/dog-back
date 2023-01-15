@@ -1,12 +1,84 @@
-const { Dog } = require('../db');
+const { Dog, Temperament } = require('../db');
 const axios = require("axios");
 const {PASS_API_KEY} = process.env;
 
-const getDogs = async (req, res) =>{
+//function deberia ir a un archivo por separado
+async function getAllDogsApi(){
+    //traigo solo los datos necesario de la api
     const apiData = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${PASS_API_KEY}`);
-    console.log(apiData);
+    // console.log(apiData);
+    
+    const arrayApiDogs = await apiData.data.map(dog => {
+        return {
+            id: dog.id,
+            name: dog.name,
+            height: dog.height.metric,
+            weight: dog.weight.metric,
+            temperament: dog.temperament,
+            life_span: dog.life_span,
+            image: dog.image.url
+        }
+    })
+    return arrayApiDogs;
+}
+
+//funcion que busca todos los dogs de la base de datos junto con el temperament
+async function getAllDogsDb(){
+
+    const allDogs = await Dog.findAll({
+        include:{
+            model: Temperament,
+            attributes: ['name']//atributos que quiero traer del modelo Temperament, el id lo trae automatico
+        }
+    })
+
+    return allDogs
+}
+
+//funcion que junta lo dogs de la api y los dogs de database
+async function getAllDogs(){
+    const dataFromApi = await getAllDogsApi();
+    const dataFromDb =  await getAllDogsDb();
+    const allData = [...dataFromApi, ...dataFromDb];
+    return allData;
+}
+
+//rutas GET/dogs GET/dogs?name=raza
+const getDogs = async (req, res, next) =>{
+    try {
+        const {name} = req.query;
+        const allDogs = await getAllDogs();
+        //busco una raza si se pasa por query sino devuelvo todo el arreglo de la api con los datos necesarios
+        if (name) {
+            const dogsFilter = allDogs.filter(d => d.name.toLowerCase().trim().includes(name.toLowerCase().trim()));
+            dogsFilter.length ? res.status(200).json(dogsFilter) : res.status(404).json({message:"Dog not found"}); 
+        } else {
+            res.status(200).json(allDogs);
+        }
+
+    } catch (error) {
+        next(error);
+        console.log(error);
+    }
+}
+
+//rutas GET/dogs/:id
+const getDogById = async (req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const allDataDogs = await getAllDogs();
+        // console.log(allDataDogs);
+        const dogFound = allDataDogs.filter(dog => dog.id === Number(id));//dejar con == para no tener errores
+        console.log(dogFound);
+        dogFound.length ? res.json(dogFound) : res.json({message: "Dog no found in the Data"})
+
+    } catch (error) {
+        next(error);
+        console.log(error);
+    }
 }
 
 module.exports = {
-    getDogs
+    getDogs,
+    getDogById
 }

@@ -78,7 +78,50 @@ const getDogById = async (req,res,next)=>{
     }
 }
 
+//rutas POST/dogs
+const postDog = async (req,res,next)=>{
+    try {
+        const {name, maxheight, minheight, maxweight, minweight, lifeSpan, temperaments, image} = req.body;
+        //validaciones
+        if(!name) return res.status(400).json({message: "No se ingreso name"});
+        if(!maxheight) return res.status(400).json({message: "No se ingreso altura"});
+        if(!minweight) return res.status(400).json({message: "No se ingreso peso"});
+        if(!lifeSpan) return res.status(400).json({message: "No se ingreso esperanza de vida"});
+        if(!image) return res.status(400).json({message: "No se ingreso imagen"});
+
+        const dog = await Dog.create({
+            name,
+            height:{
+                min: minheight,
+                max: maxheight
+            },
+            weight:{
+                min: minweight,
+                max: maxweight
+            },
+            lifeSpan,
+            image: image ? image : "https://www.publicdomainpictures.net/pictures/260000/velka/dog-face-cartoon-illustration.jpg"
+        })
+
+        const associatedTemperament = await Temperament.findAll({
+            where:{
+                name: temperaments
+            }
+        })
+
+        //cuando hay asociaciones de models se puede utilizar mixins/metodos
+        dog.addTemperament(associatedTemperament);
+
+        res.json({message: "Dog created succesfully!"})
+    } catch (error) {
+        next(error);
+        console.log(error);
+        res.json({message: error})
+    }
+}
+
 module.exports = {
     getDogs,
-    getDogById
+    getDogById,
+    postDog
 }

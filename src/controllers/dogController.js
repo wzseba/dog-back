@@ -91,14 +91,8 @@ const postDog = async (req,res,next)=>{
 
         const dog = await Dog.create({
             name,
-            height:{
-                min: minheight,
-                max: maxheight
-            },
-            weight:{
-                min: minweight,
-                max: maxweight
-            },
+            height: `${minheight} - ${maxheight}`,
+            weight: `${minweight} - ${maxweight}`,
             lifeSpan,
             image: image ? image : "https://www.publicdomainpictures.net/pictures/260000/velka/dog-face-cartoon-illustration.jpg"
         })

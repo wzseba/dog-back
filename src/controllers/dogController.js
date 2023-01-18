@@ -114,8 +114,56 @@ const postDog = async (req,res,next)=>{
     }
 }
 
+//ruta DELETE/dogs/:id
+const deleteDog = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+       
+        const delDog = await Dog.destroy({
+            where:{
+                id
+            }
+        })
+
+        delDog ? res.json({message: `Se elimino dog ${delDog}`}) : res.json({message: 'dog no se elimino'});
+
+    } catch (error) {
+        next(error)
+        console.log(error);
+        res.json({message: error});
+    }
+}
+
+const updateDog = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const {name,maxheight,maxweight,minheight,minweight,lifeSpan,temperaments} = req.body;
+        console.log(name);
+        const upDog = await Dog.update({
+            name,
+            height: `${minheight} - ${maxheight}`,
+            weight: `${minweight} - ${maxweight}`,
+            lifeSpan,
+            temperaments
+        },{
+            where:{
+                id
+            }
+        });
+
+        upDog ? res.json({message: `updated successfully`}) : res.json({message: 'no se pudo actualizar'});
+
+    } catch (error) {
+        next(error);
+        console.log(error);
+        res.json({message: error});
+    }
+}
+
 module.exports = {
     getDogs,
     getDogById,
-    postDog
+    postDog,
+    deleteDog,
+    updateDog
 }

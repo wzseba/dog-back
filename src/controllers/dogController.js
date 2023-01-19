@@ -125,7 +125,7 @@ const deleteDog = async(req,res,next)=>{
             }
         })
 
-        delDog ? res.json({message: `Se elimino dog ${delDog}`}) : res.json({message: 'dog no se elimino'});
+        delDog ? res.json({message: `Se elimino dog ${id}`}) : res.json({message: 'dog no se elimino'});
 
     } catch (error) {
         next(error)
@@ -151,7 +151,7 @@ const updateDog = async(req,res,next)=>{
             }
         });
 
-        upDog ? res.json({message: `updated successfully`}) : res.json({message: 'no se pudo actualizar'});
+        upDog ? res.json({message: `updated successfully`}) : res.json({message: 'could not update'});
 
     } catch (error) {
         next(error);

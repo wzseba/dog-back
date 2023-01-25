@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Dog, Temperament } = require('../db');
 const axios = require("axios");
 const {PASS_API_KEY} = process.env;

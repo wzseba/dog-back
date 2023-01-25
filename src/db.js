@@ -12,7 +12,7 @@ const {
 // });
 
 //PARA PRODUCCION//
-const sequelize = new Sequelize(`${DB_DEPLOY}`, {
+const sequelize = new Sequelize(DB_DEPLOY, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });

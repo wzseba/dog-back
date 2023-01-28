@@ -9,6 +9,9 @@ const {
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/dogs`, {
   logging: false,
   native: false,
+  host: 'localhost',
+  port: 3001,
+  dialect: 'postgres'
 });
 
 //PARA PRODUCCION//

@@ -68,9 +68,9 @@ const getDogById = async (req,res,next)=>{
     try {
         const {id} = req.params;
         const allDataDogs = await getAllDogs();
-        // console.log(allDataDogs);
+        
         const dogFound = allDataDogs.filter(dog => dog.id === Number(id));//dejar con == para no tener errores
-        // console.log(dogFound);
+        
         dogFound.length ? res.json(dogFound) : res.json({message: "Dog no found in the Data"})
 
     } catch (error) {

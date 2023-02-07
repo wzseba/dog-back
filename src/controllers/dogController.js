@@ -115,6 +115,24 @@ const postDog = async (req,res,next)=>{
     }
 }
 
+//ruta GET/dogs?name='raza de perro'
+const searchBreed = async ()=>{
+    try {
+        const {name} = req.query;
+
+        const allDataDogs = await getAllDogs();//obtiene datos de api como de la base de datos
+        
+        const dogFound = allDataDogs.filter(dog => dog.name.toLowerCase().trim().includes(name.toLowerCase().trim()));
+        
+        dogFound.length ? res.json(dogFound) : res.json({message: "Dog no found in the Data"})
+
+    } catch (error) {
+        next(error);
+        console.log(error);
+        res.json({message: error})
+    }
+}
+
 //ruta DELETE/dogs/:id
 const deleteDog = async(req,res,next)=>{
     try {
@@ -165,6 +183,7 @@ module.exports = {
     getDogs,
     getDogById,
     postDog,
+    searchBreed,
     deleteDog,
     updateDog
 }

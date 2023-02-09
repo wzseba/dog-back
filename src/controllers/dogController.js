@@ -69,9 +69,9 @@ const getDogById = async (req,res,next)=>{
         const {id} = req.params;
         const allDataDogs = await getAllDogs();
         
-        const dogFound = allDataDogs.filter(dog => dog.id === Number(id));//dejar con == para no tener errores
+        const dogFound = allDataDogs.filter(dog => dog.id == id);//dejar con == para no tener errores
         
-        dogFound.length ? res.json(dogFound) : res.json({message: "Dog no found in the Data"})
+        dogFound.length ? res.json(dogFound) : res.json({message: "Dog no found in the Data Base"})
 
     } catch (error) {
         next(error);
@@ -82,19 +82,19 @@ const getDogById = async (req,res,next)=>{
 //rutas POST/dogs
 const postDog = async (req,res,next)=>{
     try {
-        const {name, maxheight, minheight, maxweight, minweight, lifeSpan, temperaments, image} = req.body;
+        const {name, maxheight, minheight, maxweight, minweight, life_span, temperaments, image} = req.body;
         //validaciones
         if(!name) return res.status(400).json({message: "No se ingreso name"});
         if(!maxheight) return res.status(400).json({message: "No se ingreso altura"});
         if(!minweight) return res.status(400).json({message: "No se ingreso peso"});
-        if(!lifeSpan) return res.status(400).json({message: "No se ingreso esperanza de vida"});
+        if(!life_span) return res.status(400).json({message: "No se ingreso esperanza de vida"});
         if(!image) return res.status(400).json({message: "No se ingreso imagen"});
 
         const dog = await Dog.create({
             name,
             height: `${minheight} - ${maxheight}`,
             weight: `${minweight} - ${maxweight}`,
-            lifeSpan,
+            life_span,
             image: image ? image : "https://www.publicdomainpictures.net/pictures/260000/velka/dog-face-cartoon-illustration.jpg"
         })
 

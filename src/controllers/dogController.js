@@ -186,14 +186,14 @@ const deleteDog = async(req,res,next)=>{
 const updateDog = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        const {name,maxheight,maxweight,minheight,minweight,lifeSpan,temperaments} = req.body;
+        const {name,maxheight,maxweight,minheight,minweight,lifeSpan,temperament} = req.body;
         console.log(name);
         const upDog = await Dog.update({
             name,
             height: `${minheight} - ${maxheight}`,
             weight: `${minweight} - ${maxweight}`,
             lifeSpan,
-            temperaments
+            temperament
         },{
             where:{
                 id

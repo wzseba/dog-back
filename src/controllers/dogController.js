@@ -15,7 +15,7 @@ async function getAllDogsApi(){
             height: dog.height.metric,
             weight: dog.weight.metric,
             temperament: dog.temperament,
-            life_span: dog.life_span,
+            lifeSpan: dog.life_span,
             image: dog.image.url
         }
     })
@@ -32,7 +32,7 @@ async function getAllDogsDb(){
             attributes: ['name']//atributos que quiero traer del modelo Temperament, el id lo trae automatico
         }
     })
-    
+    // console.log('alldogsdb ',allDogs);
     const dbFormateo = allDogs.map(dog => {
         return {
           id: dog.id,
@@ -40,12 +40,12 @@ async function getAllDogsDb(){
           height: dog.height,
           weight: dog.weight,
           temperament: dog.temperaments,
-          life_span: dog.life_span,
+          lifeSpan: dog.lifeSpan,
           image: dog.image,
           createdInDb: dog.createdInDb
         }
       })
-    
+   
       const modificationTemperament = dbFormateo.map(dog => {
         if(Array.isArray(dog.temperament)) {
           dog.temperament = dog.temperament.map(t => t.name)
@@ -116,7 +116,6 @@ const postDog = async (req,res,next)=>{
         if(!minweight) return res.status(400).json({message: "No se ingreso peso"});
         if(!lifeSpan) return res.status(400).json({message: "No se ingreso esperanza de vida"});
 
-        // console.log(tempArray);
         const dog = await Dog.create({
             name,
             height: `${minheight} - ${maxheight}`,

@@ -6,9 +6,8 @@ const {PASS_API_KEY} = process.env;
 //function deberia ir a un archivo por separado
 async function getAllDogsApi(){
     //traigo solo los datos necesario de la api
-    const apiData = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${PASS_API_KEY}`);
-    // console.log(apiData);
-    
+    const apiData = await axios.get(`https://api.thedogapi.com/v1/breeds`);
+   
     const arrayApiDogs = await apiData.data.map(dog => {
         return {
             id: dog.id,
@@ -20,6 +19,7 @@ async function getAllDogsApi(){
             image: dog.image.url
         }
     })
+    
     return arrayApiDogs;
 }
 
@@ -32,7 +32,7 @@ async function getAllDogsDb(){
             attributes: ['name']//atributos que quiero traer del modelo Temperament, el id lo trae automatico
         }
     })
-
+    
     const dbFormateo = allDogs.map(dog => {
         return {
           id: dog.id,
@@ -89,27 +89,6 @@ const getDogs = async (req, res, next) =>{
     }
 }
 
-//ruta GET/dogs?name='raza de perro'
-// const searchDog = async (req,res)=>{
-//     try {
-//         const {name} = req.query;
-//         const allDataDogs = await getAllDogs();//obtiene datos de api como de la base de datos
-
-//         if(name){
-//             const dogFound = allDataDogs.filter(dog => dog.name.toLowerCase().trim().includes(name.toLowerCase().trim()));
-//             dogFound.length ? res.json(dogFound) : res.json({message: "Dog no found in the Data"});
-//         }else{
-//             res.status(400).json({message: "Enter in valid name"})
-//         }
-        
-
-//     } catch (error) {
-//         next(error);
-//         console.log(error);
-//         res.json({message: error})
-//     }
-// }
-
 //rutas GET/dogs/:id
 const getDogById = async (req,res,next)=>{
     try {
@@ -129,26 +108,26 @@ const getDogById = async (req,res,next)=>{
 //rutas POST/dogs
 const postDog = async (req,res,next)=>{
     try {
-        const {name, maxheight, minheight, maxweight, minweight, life_span, temperament, image} = req.body;
-        
+        const {name, maxheight, minheight, maxweight, minweight, lifeSpan, temperaments, image} = req.body;
+        console.log(temperaments)
         //validaciones
         if(!name) return res.status(400).json({message: "No se ingreso name"});
         if(!maxheight) return res.status(400).json({message: "No se ingreso altura"});
         if(!minweight) return res.status(400).json({message: "No se ingreso peso"});
-        if(!life_span) return res.status(400).json({message: "No se ingreso esperanza de vida"});
+        if(!lifeSpan) return res.status(400).json({message: "No se ingreso esperanza de vida"});
 
         // console.log(tempArray);
         const dog = await Dog.create({
             name,
             height: `${minheight} - ${maxheight}`,
             weight: `${minweight} - ${maxweight}`,
-            life_span,
+            lifeSpan,
             image: image ? image : "https://w0.peakpx.com/wallpaper/594/867/HD-wallpaper-courage-the-cowardly-dog-cartoon.jpg"
         })
 
         const associatedTemperament = await Temperament.findAll({
             where:{
-                name: temperament
+                name: temperaments
             }
         })
       

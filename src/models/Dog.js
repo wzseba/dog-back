@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    life_span:{
+    lifeSpan:{
       type: DataTypes.STRING,
       allowNull: false
     },

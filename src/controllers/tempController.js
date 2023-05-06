@@ -5,10 +5,10 @@ const { PASS_API_KEY } = process.env;
 const getTemperaments = async (req,res,next)=>{
     try {
         //obtengo solo los temperamentos de la api
-        const temperamentsApi = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${PASS_API_KEY}`);
+        const temperamentsApi = await axios.get(`https://api.thedogapi.com/v1/breeds`);
         //array de temperamentos
         const tempData = temperamentsApi.data.map(t => t.temperament);
-        // console.log(temperaments);
+        
         //primero convierto todo el arreglo de en una sola cadena despues convierto a un array seperando cada elemento con split(',')
         const temps = tempData.toString().split(',');
         

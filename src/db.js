@@ -12,7 +12,7 @@ const {
 // });
 
 // PARA PRODUCCION nueva
-const sequelize = new Sequelize(process.env.DB_DEPLOY, {
+const sequelize = new Sequelize(DB_DEPLOY, {
   // logging: false,
   // native: false, 
 });

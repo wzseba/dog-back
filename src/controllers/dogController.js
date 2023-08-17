@@ -6,7 +6,7 @@ const {PASS_API_KEY} = process.env;
 //function deberia ir a un archivo por separado
 async function getAllDogsApi(){
     //traigo solo los datos necesario de la api
-    const apiData = await axios.get(`https://api.thedogapi.com/v1/breeds`);
+    const apiData = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${PASS_API_KEY}`);
    
     const arrayApiDogs = await apiData.data.map(dog => {
         return {

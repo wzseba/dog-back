@@ -11,7 +11,7 @@ const {
 //   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 // });
 
-// PARA PRODUCCION nueva
+//PARA PRODUCCION nueva
 const sequelize = new Sequelize(DB_DEPLOY, {
    logging: false,
    native: false, 
@@ -37,7 +37,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Dog, Temperament } = sequelize.models;
+const { Dog, Temperament, User } = sequelize.models;
 
 // Aca vendrian las relaciones
 //una raza de perro PERTENECE A MUCHOS temperamentos

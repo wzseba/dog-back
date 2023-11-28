@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const dogRouter = require('./routes/dogRouter.js');
 const tempRouter = require('./routes/tempRouter.js');
+const loginRouter = require('./routes/loginRouter.js');
 
 require('./db.js');
 
@@ -24,6 +25,7 @@ server.use((req, res, next) => {
   next();
 });
 
+server.use('/login', loginRouter);
 server.use('/dogs', dogRouter);
 server.use('/temperaments', tempRouter);
 

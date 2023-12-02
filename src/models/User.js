@@ -37,6 +37,8 @@ module.exports = (sequelize) => {
           usuario.password = await bcrypt.hash(usuario.password, salt);
         },
       },
+    },{
+      timestamps: false
     }
   );
 };

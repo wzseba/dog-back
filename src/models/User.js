@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 module.exports = (sequelize) => {
   sequelize.define(
@@ -28,8 +28,12 @@ module.exports = (sequelize) => {
       rol: {
         type: DataTypes.STRING,
         defaultValue: "user",
-      }
+      },
     },
+    {
+      timestamps: false,
+    },
+
     {
       hooks: {
         beforeCreate: async (usuario) => {
@@ -37,8 +41,6 @@ module.exports = (sequelize) => {
           usuario.password = await bcrypt.hash(usuario.password, salt);
         },
       },
-    },{
-      timestamps: false
     }
   );
 };

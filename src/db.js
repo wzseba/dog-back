@@ -11,7 +11,7 @@ const {
 //   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 // });
 
-//PARA PRODUCCION nueva
+// PARA PRODUCCION nueva
 const sequelize = new Sequelize(DB_DEPLOY, {
    logging: false,
    native: false, 
@@ -44,6 +44,9 @@ const { Dog, Temperament, User } = sequelize.models;
 Dog.belongsToMany(Temperament,{through: "dog_temperament"});//genera una tabla intermedia
 //un temperamento PERTENECE A MUCHAS razas de perro
 Temperament.belongsToMany(Dog,{through: "dog_temperament"});//genera una tabla intermedia
+
+Dog.hasMany(User);
+User.belongsTo(Dog);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

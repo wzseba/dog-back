@@ -32,9 +32,6 @@ module.exports = (sequelize) => {
     },
     {
       timestamps: false,
-    },
-
-    {
       hooks: {
         beforeCreate: async (usuario) => {
           const salt = await bcrypt.genSalt(10);

@@ -1,6 +1,6 @@
-const { User } = require("../db"); //en proceso de desarrollo
+const { User } = require("../db");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { generateToken } = require("../middlewares/accessToken.js");
 
 const formLogin = async (req, res, next) => {
   try {
@@ -9,37 +9,43 @@ const formLogin = async (req, res, next) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(401).json({ error: "Invalid email" });
+      return res.status(401).json({ error: "El usuario no existe" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Invalido password" });
+      return res.status(401).json({ error: "El password es incorrecto" });
     }
-
-    const token = jwt.sign({ userId: user.id }, "your-secret-key", {
-      expiresIn: "1h",
-    });
-
-    res.cookie("token", token);
-    return res.send("inicio de sesion correcto!!");
+    generateToken(user, res, next);
+    // console.log(user.id);
+    res.json({ ok: true });
   } catch (error) {
     next(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-const registerUser = (req, res, next) => {
+const registerUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    console.log(name + "---" + email + "---" + password);
+
+    await User.create({ name, email, password });
+
+    res.status(200).json({ message: "Usuario creado!!" });
   } catch (error) {
     next(error);
+    console.log(error);
   }
+};
+
+const profileUser = (req, res, next) => {
+  console.log("perfil de usuario con token");
+  return;
 };
 
 module.exports = {
   formLogin,
-  registerUser
+  registerUser,
+  profileUser,
 };

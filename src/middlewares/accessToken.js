@@ -11,18 +11,23 @@ const generateToken = (user, res, next) => {
   next(); // Para evitar que el token sea accesible desde el lado del cliente mediante JavaScript
 };
 
-const verifyToken = (req, res, next) => {
-  console.log("validate token");
-  return;
-};
-
 const accessWithToken = (req, res, next) => {
-  console.log("este es mi token para entrar a mi perfil");
-  next();
+  try {
+    const { token } = req.cookies;
+
+    if (!token) return res.status(401).json({ msg: "Not authorized" });
+
+    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.id = userId;
+
+    next();
+  } catch (error) {
+    res.status(401).json({ error });
+  }
 };
 
 module.exports = {
   generateToken,
-  verifyToken,
   accessWithToken,
 };

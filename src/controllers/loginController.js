@@ -18,34 +18,51 @@ const formLogin = async (req, res, next) => {
       return res.status(401).json({ error: "El password es incorrecto" });
     }
     generateToken(user, res, next);
-    // console.log(user.id);
+
     res.json({ ok: true });
   } catch (error) {
-    next(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-const registerUser = async (req, res, next) => {
+const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
     await User.create({ name, email, password });
 
-    res.status(200).json({ message: "Usuario creado!!" });
+    res.status(200).json({ ok: true });
   } catch (error) {
-    next(error);
     console.log(error);
+    res.json({ error });
   }
 };
 
-const profileUser = (req, res, next) => {
-  console.log("perfil de usuario con token");
-  return;
+const profileUser = async (req, res) => {
+  try {
+    const id = req.id;
+    // console.log(id);
+    const user = await User.findByPk(id);
+
+    if (!user) return res.status(404).json({ msg: "Not Found" });
+
+    const nameCapitalize = user.name[0].toUpperCase() + user.name.slice(1);
+
+    res.json({ msg: `Walcome ${nameCapitalize}!!` });
+  } catch (error) {
+    console.log(error);
+    res.json({ error });
+  }
+};
+
+const logout = (req, res) => {
+  res.clearCookie("token");
+  res.json({ ok: true });
 };
 
 module.exports = {
   formLogin,
   registerUser,
   profileUser,
+  logout,
 };

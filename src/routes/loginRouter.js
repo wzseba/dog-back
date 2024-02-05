@@ -3,6 +3,7 @@ const {
   formLogin,
   registerUser,
   profileUser,
+  logout,
 } = require("../controllers/loginController.js");
 const {
   validationLogin,
@@ -13,7 +14,8 @@ const { accessWithToken } = require("../middlewares/accessToken.js");
 const loginRouter = Router();
 
 loginRouter.post("/register", validationRegister, registerUser);
-loginRouter.post("/", validationLogin, formLogin);
+loginRouter.post("/login", validationLogin, formLogin);
 loginRouter.get("/profile", accessWithToken, profileUser);
+loginRouter.get("/logout", logout);
 
 module.exports = loginRouter;

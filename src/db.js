@@ -11,6 +11,8 @@ const { DB_USER, DB_PASSWORD, DB_HOST, PORT, DB_DEPLOY } = process.env;
 
 //PARA PRODUCCION nueva
 const sequelize = new Sequelize(DB_DEPLOY, {
+  logging: false,
+  native: false,
   ssl: true,
 });
 

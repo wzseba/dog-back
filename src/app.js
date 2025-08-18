@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const dogRouter = require("./routes/dogRouter.js");
 const tempRouter = require("./routes/tempRouter.js");
 const loginRouter = require("./routes/loginRouter.js");
+const cors = require("cors"); // 👈 te falta esta línea
 
 require("./db.js");
 

@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const { DB_USER, DB_PASSWORD, DB_HOST, PORT, DB_DEPLOY } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, PORT, DATABASE_URL } = process.env;
 
 // PARA PRODUCCION nueva
 // const sequelize = new Sequelize(DB_DEPLOY, {
@@ -10,7 +10,7 @@ const { DB_USER, DB_PASSWORD, DB_HOST, PORT, DB_DEPLOY } = process.env;
 //   native: false,
 //   ssl: true,
 // });
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(DATABASE_URL, {
   logging: false,
   native: false,
   dialect: "postgres",

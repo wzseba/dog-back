@@ -5,7 +5,7 @@ const path = require('path');
 const { DB_USER, DB_PASSWORD, DB_HOST, PORT, DATABASE_URL } = process.env;
 
 // PARA PRODUCCION nueva
- const sequelize = new Sequelize(DB_DEPLOY, {
+ const sequelize = new Sequelize(DATABASE_URL, {
    logging: false,
    native: false,
    ssl: true,

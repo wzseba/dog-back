@@ -5,12 +5,12 @@ const path = require('path');
 const { DB_USER, DB_PASSWORD, DB_HOST, PORT, DATABASE_URL } = process.env;
 
 // PARA PRODUCCION nueva
-// const sequelize = new Sequelize(DB_DEPLOY, {
-//   logging: false,
-//   native: false,
-//   ssl: true,
-// });
-const sequelize = new Sequelize(DATABASE_URL, {
+ const sequelize = new Sequelize(DB_DEPLOY, {
+   logging: false,
+   native: false,
+   ssl: true,
+ });
+/*const sequelize = new Sequelize(DATABASE_URL, {
   logging: false,
   native: false,
   dialect: "postgres",
@@ -20,7 +20,7 @@ const sequelize = new Sequelize(DATABASE_URL, {
       rejectUnauthorized: false, // necesario para Render
     },
   },
-});
+});*/
 
 const basename = path.basename(__filename);
 

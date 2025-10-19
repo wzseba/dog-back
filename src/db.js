@@ -3,10 +3,9 @@ const { Sequelize } = require('sequelize');
 const pg = require('pg');
 const fs = require('fs');
 const path = require('path');
-const { DB_USER, DB_NAME, DB_PASS, DB_HOST} = process.env;
+const {DATABASE_URL} = process.env;
 
-const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-  host: DB_HOST,
+const sequelize = new Sequelize(DATABASE_URL, {
   dialect: 'postgres',
   dialectModule: pg,
   logging: false,

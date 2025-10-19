@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "sync-db": "node src/sync.js",
+    "build": "npm run sync-db"
   },
   "author": "Henry",
   "license": "ISC",

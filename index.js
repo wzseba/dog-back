@@ -10,7 +10,7 @@
   });
 });*/
 // src/sync.js
-const { conn } = require('./db.js');
+const { conn } = require('./src/db.js');
 
 // Importa todos tus modelos aquí para que conn los conozca
 require('./src/models/User.js');

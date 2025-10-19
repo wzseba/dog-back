@@ -8,7 +8,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectModule: pg,
   dialectOptions: process.env.NODE_ENV === 'production' ? {
     ssl: { require: true, rejectUnauthorized: false }
-  } : {},
+  } : {ssl: false},
   logging: false,
 });
 
